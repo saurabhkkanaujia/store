@@ -3,8 +3,9 @@
     include('config.php');
     include('classes/DB.php');
     include('classes/User.php');
-
-    if (isset($_POST['submit']) && ($_POST['submit']=='signup')){
+    include('classes/Login.php');
+    
+    if ($_POST['submit']=='signup'){
         $username = $_POST['username'];
         $fullName = $_POST['full_name'];
         $email = $_POST['email'];
@@ -23,13 +24,23 @@
         
     }
 
-    if (isset($_POST['submit']) && ($_POST['submit']=='signin')){
+    if (isset($_POST['signin'])){
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $sql = "";
-        $user->addUser();
-        header("Location: admin/login.php");
+        $user = new Login($email, $password);   
+        $userData = $user->authenticate();
         
-        
-        
+        if(count($userData)>=1){
+            if($userData[0]['role'] == 'admin'){
+                header("Location: dashboard.php");
+            }else{
+                if ($userData[0]['status'] == 'Approved'){
+                    header("Location: dashboard.html");
+                }else{
+                    $msg = "You have not been approved";
+                }
+            }
+        }else{
+            $msg = "Invalid Login Credentials";
+        }
     }

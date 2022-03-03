@@ -18,11 +18,18 @@
             $this->role = $role;
             $this->status = $status;
         }
+        public function check(){
+            if(strlen($this->username)>0 && strlen($this->name)>0 && strlen($this->email)>0 && strlen($this->password)>0 && strlen($this->rePassword)>0 && strlen($this->role)>0 && strlen($this->password)>0 ){
+                return true;
+            }
+        }
 
         public function addUser(){
-            $sql = "INSERT INTO users (username, full_name, email, password, role, status)
-                    VALUES ('".$this->username."', '".$this->name."', '".$this->email."', '".$this->password."', '".$this->role."', '".$this->status."' )";
-            DB::getInstance()->exec($sql);
+            if($this->check() ==true){
+                $sql = "INSERT INTO users (username, full_name, email, password, role, status)
+                        VALUES ('".$this->username."', '".$this->name."', '".$this->email."', '".$this->password."', '".$this->role."', '".$this->status."' )";
+                DB::getInstance()->exec($sql);
+            }
         }
         public static function error($msg){
             return $msg;
