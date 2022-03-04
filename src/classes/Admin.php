@@ -1,11 +1,38 @@
 <?php
     class Admin
     {
-        public string $username;
-
-        public function __construct($username)
+        public function fetchAllUsers($amount)
         {
-            $this->username = $username;
+            $sql = "SELECT * FROM users WHERE NOT role = 'admin' ".$amount."";
+
+            $stmt = DB::getInstance()->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll();  
         }
-        
+        public function changeStatus($id, $action){
+            if ($action == 'approve'){
+                $sql = "UPDATE users SET status = 'Approved' WHERE id = ".$id."";
+            }else{
+                $sql = "UPDATE users SET status = 'Not Approved' WHERE id = ".$id."";
+            }
+            DB::getInstance()->exec($sql);
+        }
+        public function delete($id, $table){
+            $sql = "DELETE FROM ".$table." WHERE id = ".$id."";
+            
+            DB::getInstance()->exec($sql);
+        }
+        public function fetchProducts()
+        {
+            $sql = "SELECT * FROM products";
+
+            $stmt = DB::getInstance()->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll();  
+        }
+        // public function addProduct($name, $category, $price){
+        //     $sql 
+        // }
     }

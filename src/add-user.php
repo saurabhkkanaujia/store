@@ -51,7 +51,7 @@
     <?php include 'sidebar.php'?>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Add Product</h1>
+        <h1 class="h2">Add User</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -65,24 +65,32 @@
       </div>
 
       <form action="index.php" method="POST" class="row g-3">
-      <div class="col-md-6">
-          <label for="name" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="name" name="name">
-        </div>
         <div class="col-md-6">
-          <label for="category" class="form-label">Product Category</label>
-          <input type="text" class="form-control" id="category" name="category">
-        </div>
-        <div class="col-md-6">
-          <label for="price" class="form-label">Product Price</label>
-          <input type="number" class="form-control" id="price" name="price">
-        </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary" name="add">Add Product</button>
-        </div>
-        <div class="col-md-12">
-          <span><?php echo isset($_SESSION['prodMsg'])?$_SESSION['prodMsg']:"";?></span>
-        </div>
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="col-md-6">
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="name" name="name">
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+          </div>
+          <div class="col-md-6">
+            <label for="role" class="form-label">Role</label>
+            <input type="role" class="form-control" id="role" name="role">
+          </div>
+          <div class="col-md-6">
+            <label for="status" class="form-label">Status</label>
+            <input type="status" class="form-control" id="status" name="status">
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary" name="addUser">Add User</button>
+          </div>
+          <div class="col-md-12">
+            <span><?php echo isset($_SESSION['prodMsg'])?$_SESSION['prodMsg']:"";?></span>
+          </div>
       </form>      
     </main>
   </div>
