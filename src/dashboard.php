@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if(!($_SESSION['user']['status'] == 'admin' || $_SESSION['user']['status'] == 'Approved')){
+      $_SESSION['msg'] = "Please Signin First";
+      header('Location: admin/login.php');
+    }
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -51,10 +58,15 @@
   </div>
 </header>
 
+
+
 <div class="container-fluid">
   <div class="row">
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
+      <?php 
+        if($_SESSION['user']['role']=='admin'){
+      ?> 
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="dashboard.html">
@@ -92,60 +104,102 @@
               Integrations
             </a>
           </li>
-        </ul>        
+        </ul>
+        
+        <?php }
+          else if($_SESSION['user']['role']=='customer'){
+        ?>      
+          <ul>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="dashboard.php">
+              <span data-feather="home"></span>
+              My Profile
+            </a>
+          </li>          
+        </ul>
+
+        <?php } ?>
+
       </div>
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+    <?php 
+      if($_SESSION['user']['role']=='admin'){
+    ?>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                This week
+              </button>
+            </div>
           </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-        </div>
-      </div>
 
-      <h2>Section title</h2>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Header</th>
-              <th scope="col">Header</th>
-              <th scope="col">Header</th>
-              <th scope="col">Header</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <h2>Section title</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Header</th>
+                  <th scope="col">Header</th>
+                  <th scope="col">Header</th>
+                  <th scope="col">Header</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>random</td>
+                  <td>data</td>
+                  <td>placeholder</td>
+                  <td>text</td>
+                </tr>
+                <tr>
+                  <td>1,002</td>
+                  <td>placeholder</td>
+                  <td>irrelevant</td>
+                  <td>visual</td>
+                  <td>layout</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      <?php }
+        else if($_SESSION['user']['role']=='customer'){
+      ?>
+<h1 class="h3 mb-3 fw-normal">Hello&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION['user']['full_name']; ?></h1>
+<hr>
+<form action="" method="post">
+    <h1 class="h3 mb-3 fw-normal">My Profile</h1>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username">
+      <label for="floatingInput">Username</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingInput" name="full_name" placeholder="Full Name">
+      <label for="floatingInput">Full Name</label>
+    </div>
+    
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit" name="submit" value="update">Update</button>
+    <p class="mt-5 mb-3 text-muted">&copy; CEDCOSS Technologies</p>
+  </form>
+
+      <?php } ?>
     </main>
   </div>
 </div>
 
-
+ 
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>
 </html>

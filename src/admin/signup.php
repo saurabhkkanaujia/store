@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -37,6 +40,9 @@
 <main class="form-signin">
   <form action="../index.php" method="post">
     <h1 class="h3 mb-3 fw-normal">Sign Up</h1>
+    <span>
+      <?php echo isset($_SESSION['msg'])?$_SESSION['msg']:"" ; ?>
+    </span>
 
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username">
@@ -69,7 +75,7 @@
         <input type="checkbox" value="remember-me"> I accept the Terms and Conditions.
       </label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit" name="submit" value="signup">Sign Up</button>
+    <button class="w-100 btn btn-lg btn-primary" type="submit" name="signup">Sign Up</button>
     <p class="mt-5 mb-3 text-muted">&copy; CEDCOSS Technologies</p>
   </form>
 </main>
