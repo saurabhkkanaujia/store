@@ -17,8 +17,10 @@
             if($_SESSION['check']==0){
                 $_SESSION['msg'] = "You have successfully Signed Up";
                 header("Location: admin/login.php");
-            }else{
+            }elseif($_SESSION['check']==1){
                 $_SESSION['msg'] = "Invalid Credentials";
+                header("Location: admin/signup.php");
+            }else{
                 header("Location: admin/signup.php");
             }
             

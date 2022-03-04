@@ -1,4 +1,5 @@
 <?php
+    require ('Validation.php');
     class User extends DB
     {
         public string $username;
@@ -17,18 +18,14 @@
             $this->role = $role;
             $this->status = $status;
         }
-        public function check(){
-            if(strlen($this->username)!=0 && strlen($this->name)!=0 && strlen($this->email)!=0 && strlen($this->password)!=0 && strlen($this->rePassword)!=0 && strlen($this->role)!=0 && strlen($this->password)!=0 ){
-                $_SESSION['check']=0;
-                return true;
-            }else{
-                $_SESSION['check']=1;
-                return false;
-            }
-        }
 
         public function addUser(){
-            if($this->check()){
+            // $userExists = new Login($this->email);
+            $check=new Validation();
+            $check->check($this->username, $this->name, $this->email,$this->password, $this->rePassword, $this->role);
+
+            
+            if($check == true && !($check->alreadyExists($this->email))){
                 $sql = "INSERT INTO users (username, full_name, email, password, role, status)
                         VALUES ('".$this->username."', '".$this->name."', '".$this->email."', '".$this->password."', '".$this->role."', '".$this->status."' )";
                 DB::getInstance()->exec($sql);
