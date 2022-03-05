@@ -20,12 +20,10 @@
         }
 
         public function addUser(){
-            // $userExists = new Login($this->email);
             $check=new Validation();
-            $check->check($this->username, $this->name, $this->email,$this->password, $this->rePassword, $this->role);
+            $checkUser = $check->check($this->username, $this->name, $this->email,$this->password, $this->rePassword, $this->role);
 
-            
-            if($check == true && !($check->alreadyExists($this->email))){
+            if($checkUser == true && !($check->alreadyExists($this->email))){
                 $sql = "INSERT INTO users (username, full_name, email, password, role, status)
                         VALUES ('".$this->username."', '".$this->name."', '".$this->email."', '".$this->password."', '".$this->role."', '".$this->status."' )";
                 DB::getInstance()->exec($sql);

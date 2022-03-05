@@ -1,9 +1,22 @@
 <?php
     session_start();
+    include('config.php');
+    include('classes/DB.php');
+    include('classes/Admin.php');
+    include('classes/Products.php');
     if(!($_SESSION['user']['status'] == 'admin' || $_SESSION['user']['status'] == 'Approved')){
       $_SESSION['msg'] = "Please Signin First";
       header('Location: admin/login.php');
     }
+    
+    $amount = "ORDER BY id DESC LIMIT 5";
+    $fetchObj = new Admin();
+    $fetchArr = $fetchObj->fetchAllUsers($amount);
+
+    $query = "ORDER BY id DESC LIMIT 5";
+    $fetchObj = new Products();
+    $prodArr = $fetchObj->fetchProducts($query);
+   
 ?>
 <!doctype html>
 <html lang="en">
@@ -45,82 +58,11 @@
   </head>
   <body>
     
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <div class="navbar-nav">
-    <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
-    </div>
-  </div>
-</header>
-
+<?php include 'header.php'?>
 
 <div class="container-fluid">
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-      <?php 
-        if($_SESSION['user']['role']=='admin'){
-      ?> 
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="dashboard.html">
-              <span data-feather="home"></span>
-              Dashboard
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-              Orders
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="products.html">
-              <span data-feather="shopping-cart"></span>
-              Products
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="users"></span>
-              Customers
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              Reports
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              Integrations
-            </a>
-          </li>
-        </ul>
-        
-        <?php }
-          else if($_SESSION['user']['role']=='customer'){
-        ?>      
-          <ul>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="dashboard.php">
-              <span data-feather="home"></span>
-              My Profile
-            </a>
-          </li>          
-        </ul>
-
-        <?php } ?>
-
-      </div>
-    </nav>
+    <?php include 'sidebar.php'?>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <?php 
@@ -140,39 +82,66 @@
             </div>
           </div>
 
-          <h2>Section title</h2>
+          <h2>Customers</h2>
+          <a class="btn btn-success" href="customers.php">View All Users</a>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Header</th>
-                  <th scope="col">Header</th>
-                  <th scope="col">Header</th>
-                  <th scope="col">Header</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>random</td>
-                  <td>data</td>
-                  <td>placeholder</td>
-                  <td>text</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>placeholder</td>
-                  <td>irrelevant</td>
-                  <td>visual</td>
-                  <td>layout</td>
-                </tr>
+                <?php 
+                foreach($fetchArr as $key=>$value){
+                  echo "<tr>
+                  <td>".$value['id']."</td>
+                  <td>".$value['full_name']."</td>
+                  <td>".$value['username']."</td>
+                  <td>".$value['email']."</td>
+                  <td>".$value['role']."</td>
+                  <td>".$value['status']."</td>";
+                }
+                ?>
               </tbody>
             </table>
           </div>
+          <h2>Products</h2>
+          <a class="btn btn-success" href="products.php">View All Products</a>
+
+          <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              foreach ($prodArr as $key => $value) {
+                echo "<tr>
+                  <td>" . $value['id'] . "</td>
+                  <td>" . $value['name'] . "</td>
+                  <td>" . $value['category'] . "</td>
+                  <td>" . $value['price'] . "</td>";
+              }
+              ?>
+            </tbody>
+          </table>
+          </div>
+          
       <?php }
         else if($_SESSION['user']['role']=='customer'){
       ?>
+      
 <h1 class="h3 mb-3 fw-normal">Hello&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION['user']['full_name']; ?></h1>
 <hr>
 <form action="" method="post">
