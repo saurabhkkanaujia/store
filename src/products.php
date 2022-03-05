@@ -11,6 +11,23 @@ if (!($_SESSION['user']['status'] == 'admin' || $_SESSION['user']['status'] == '
 $query = "";
 $fetchObj = new Products();
 $prodArr = $fetchObj->fetchProducts($query);
+
+if(!isset($_SESSION['val'])){
+  $_SESSION['val']=1;
+}
+if (isset($_POST['pagination'])) {
+  if ($_POST['pagination'] == 'prev') {
+    $_SESSION['val'] -= 1;
+  } elseif ($_POST['pagination'] == 'next') {
+    $_SESSION['val'] += 1;
+  } else {
+    $_SESSION['val'] = $_POST['pagination'];
+  }
+}
+$val = $_SESSION['val'];
+
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -54,86 +71,100 @@ $prodArr = $fetchObj->fetchProducts($query);
 
 <body>
 
-  <?php include 'header.php'?>
+  <?php include 'header.php' ?>
 
-  <?php include 'sidebar.php'?>
+  <?php include 'sidebar.php' ?>
 
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Products</h1>
-          <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group me-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-            </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-              <span data-feather="calendar"></span>
-              This week
-            </button>
-          </div>
+  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Products</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
         </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+          <span data-feather="calendar"></span>
+          This week
+        </button>
+      </div>
+    </div>
 
-        <form class="row row-cols-lg-auto g-3 align-items-center">
-          <div class="col-12">
-            <label class="visually-hidden" for="inlineFormInputGroupUsername">Search</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter id,name...">
-            </div>
-          </div>
+    <form class="row row-cols-lg-auto g-3 align-items-center">
+      <div class="col-12">
+        <label class="visually-hidden" for="inlineFormInputGroupUsername">Search</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter id,name...">
+        </div>
+      </div>
 
 
 
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary">Search</button>
-          </div>
-          <div class="col-12">
-            <a class="btn btn-success" href="add-product.php">Add Product</a>
-            <span class="text-success"><?php $prodMsg = isset($_SESSION['prodMsg'])?$_SESSION['prodMsg']:"";
-                        $_SESSION['prodMsg']="";
-                        echo $prodMsg; ?></span>
-          </div>
-        </form>
-        <div class="table-responsive">
-          <form action="index.php" method="POST">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Price</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              foreach ($prodArr as $key => $value) {
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+      <div class="col-12">
+        <a class="btn btn-success" href="add-product.php">Add Product</a>
+        <span class="text-success"><?php $prodMsg = isset($_SESSION['prodMsg']) ? $_SESSION['prodMsg'] : "";
+                                    $_SESSION['prodMsg'] = "";
+                                    echo $prodMsg; ?></span>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <form action="index.php" method="POST">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Price</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            foreach ($prodArr as $key => $value) {
+              if ($key >= 5 * ($val - 1) && $key < (5 * $val)) {
+
                 echo "<tr>
                   <td>" . $value['id'] . "</td>
                   <td>" . $value['name'] . "</td>
                   <td>" . $value['category'] . "</td>
                   <td>" . $value['price'] . "</td>
                   <td>
-                    <a class = 'btn btn-primary' href='edit-product.php?id=".$value['id']."'>Edit</a>
-                    <button class = 'btn btn-danger' type='submit' name = 'deleteProd' value = ".$value['id'].">Delete</button>
+                    <a class = 'btn btn-primary' href='edit-product.php?id=" . $value['id'] . "'>Edit</a>
+                    <button class = 'btn btn-danger' type='submit' name = 'deleteProd' value = " . $value['id'] . ">Delete</button>
                   </td>";
               }
-              ?>
-            </tbody>
-          </table>
-          </form>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-          </nav>
-        </div>
-      </main>
+            }
+            ?>
+          </tbody>
+        </table>
+      </form>
+      <nav aria-label="Page navigation example">
+        <form action="" method="POST">
+          <ul class="pagination">
+            <?php if ($val > 1) { ?>
+              <li class="page-item"><button class="page-link" name="pagination" value="prev">Previous</button></li>
+            <?php } ?>
+
+            <?php $ind = 1;
+            for ($i = 0; $i < count($prodArr); $i += 5) { ?>
+
+              <li class="page-item"><button class="page-link" name="pagination" value="<?php echo $ind; ?>"><?php echo $ind; ?></button></li>
+            <?php $ind += 1;
+            } ?>
+
+            <?php if ((floor(count($prodArr) / 5) + 1) != $val) { ?>
+              <li class="page-item"><button class="page-link" name="pagination" value="next">Next</button></li>
+            <?php } ?>
+          </ul>
+        </form>
+      </nav>
     </div>
+  </main>
+  </div>
   </div>
 
 
