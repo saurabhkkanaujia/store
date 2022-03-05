@@ -3,6 +3,7 @@
     include('config.php');
     include('classes/DB.php');
     include('classes/Admin.php');
+    include('classes/Products.php');
     if(!($_SESSION['user']['status'] == 'admin' || $_SESSION['user']['status'] == 'Approved')){
       $_SESSION['msg'] = "Please Signin First";
       header('Location: admin/login.php');
@@ -11,6 +12,10 @@
     $amount = "ORDER BY id DESC LIMIT 5";
     $fetchObj = new Admin();
     $fetchArr = $fetchObj->fetchAllUsers($amount);
+
+    $query = "ORDER BY id DESC LIMIT 5";
+    $fetchObj = new Products();
+    $prodArr = $fetchObj->fetchProducts($query);
    
 ?>
 <!doctype html>
@@ -77,7 +82,8 @@
             </div>
           </div>
 
-          <h2>Section title</h2>
+          <h2>Customers</h2>
+          <a class="btn btn-success" href="customers.php">View All Users</a>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
@@ -105,9 +111,37 @@
               </tbody>
             </table>
           </div>
+          <h2>Products</h2>
+          <a class="btn btn-success" href="products.php">View All Products</a>
+
+          <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              foreach ($prodArr as $key => $value) {
+                echo "<tr>
+                  <td>" . $value['id'] . "</td>
+                  <td>" . $value['name'] . "</td>
+                  <td>" . $value['category'] . "</td>
+                  <td>" . $value['price'] . "</td>";
+              }
+              ?>
+            </tbody>
+          </table>
+          </div>
+          
       <?php }
         else if($_SESSION['user']['role']=='customer'){
       ?>
+      
 <h1 class="h3 mb-3 fw-normal">Hello&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $_SESSION['user']['full_name']; ?></h1>
 <hr>
 <form action="" method="post">

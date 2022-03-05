@@ -94,26 +94,36 @@
         $rePassword = "null";
         $role = $_POST['role'];
         $status = $_POST['status'];
-        if($password == $rePassword){
-            $user = new User($username, $fullName, $email, $password, $rePassword, $role, $status);
-            $user->addUser();
-            if($_SESSION['check']==0){
-                $_SESSION['msg'] = "User Added Successfully";
-                header("Location: customers.php");
-            }elseif($_SESSION['check']==1){
-                $_SESSION['msg'] = "Invalid Input";
-                header("Location: add-user.php");
-            }else{
-                header("Location: add-user.php");
-            }
-            
+
+        $user = new User($username, $fullName, $email, $password, $rePassword, $role, $status);
+        $user->addUser();
+        if($_SESSION['check']==0){
+            $_SESSION['msg'] = "User Added Successfully";
+            header("Location: customers.php");
+        }elseif($_SESSION['check']==1){
+            $_SESSION['msg'] = "Invalid Input";
+            header("Location: add-user.php");
         }else{
-            $_SESSION['msg'] = "Password and Confirm Password Do Not Match";
-            header("Location: admin/signup.php");
+            header("Location: add-user.php");
         }
+        
     }
 
     if (isset($_POST['signOut'])){
         session_destroy();
         header("Location: admin/login.php");
+    }
+
+    if (isset($_POST['updateProduct'])){
+        $check = new Validation();
+        if ($check->checkProduct($_POST['name'], $_POST['category'], $_POST['price'])){
+            $updateProd = new Products();
+            $updateProd->updateProduct($_POST['updateProduct'], $_POST['name'], $_POST['category'], $_POST['price']);
+            header("Location: products.php");
+            $_SESSION['prodMsg'] = "Product Updated Successfully";
+        }else{
+            $_SESSION['prodMsg'] = "Invalid Input";
+            header("Location: edit-product.php?id=".$_POST['updateProduct']);
+        }
+        
     }

@@ -1,9 +1,9 @@
 <?php
     class Products
     {
-        public function fetchProducts()
+        public function fetchProducts($query)
         {
-            $sql = "SELECT * FROM products";
+            $sql = "SELECT * FROM products ".$query;
 
             $stmt = DB::getInstance()->prepare($sql);
             $stmt->execute();
@@ -19,5 +19,10 @@
                 DB::getInstance()->exec($sql);
                 $_SESSION['error'] = 0;
             }
+        }
+        public function updateProduct($id, $name, $category, $price){
+            $sql = "UPDATE products SET name = '".$name."', category = '".$category."', price = ".$price." WHERE id = ".$id." ";
+            // $sql = "UPDATE products SET name = '".."' WHERE id = ".$id."";
+            DB::getInstance()->exec($sql);
         }
     }

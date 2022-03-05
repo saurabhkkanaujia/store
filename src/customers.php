@@ -80,6 +80,9 @@ $fetchArr = $fetchObj->fetchAllUsers($amount);
 
           <h2>Section title</h2>
           <a class="btn btn-success" href="add-user.php">Add User</a>
+          <span class="text-success"><?php $prodMsg = isset($_SESSION['msg']) ? $_SESSION['msg'] : "";
+                                      $_SESSION['msg'] = "";
+                                      echo $prodMsg; ?></span>
           <div class="table-responsive">
             <form action="index.php" method="POST">
               <table class="table table-striped table-sm">
@@ -106,15 +109,14 @@ $fetchArr = $fetchObj->fetchAllUsers($amount);
                   <td>" . $value['status'] . "</td>";
 
                     if ($value['status'] == "Not Approved") {
-                      echo "<td><button class='btn btn-success' type='submit' name = 'approve' value = ".$value['id'].">Approve</button>
+                      echo "<td><button class='btn btn-success' type='submit' name = 'approve' value = " . $value['id'] . ">Approve</button>
                     
                     ";
                     } else {
-                      echo "<td><button class='btn btn-danger' type='submit' name = 'restrict' value = ".$value['id'].">Restrict</button>
+                      echo "<td><button class='btn btn-danger' type='submit' name = 'restrict' value = " . $value['id'] . ">Restrict</button>
                   ";
-                     
                     }
-                    echo "<button class='btn btn-danger' type='submit' name = 'deleteUser' value = ".$value['id'].">Delete</button></td>
+                    echo "<button class='btn btn-danger' type='submit' name = 'deleteUser' value = " . $value['id'] . ">Delete</button></td>
                         </td></tr> ";
                   }
                   ?>

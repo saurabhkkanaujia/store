@@ -1,8 +1,15 @@
 <?php
 session_start();
-// echo "<pre>";
-// print_r($_SESSION);
-// echo "</pre>";
+include('config.php');
+include('classes/DB.php');
+include('classes/User.php');
+include('classes/Login.php');
+include('classes/Admin.php');
+include('classes/Products.php');
+
+$queryWithID = "WHERE id = " . $_GET['id'] . " ";
+$fetchProd = new Products();
+$productArr = $fetchProd->fetchProducts($queryWithID);
 ?>
 <!doctype html>
 <html lang="en">
@@ -53,10 +60,10 @@ session_start();
       <?php include 'sidebar.php' ?>
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Add User</h1>
-          <span class="text-success"><?php $prodMsg = isset($_SESSION['msg']) ? $_SESSION['msg'] : "";
-                                      $_SESSION['msg'] = "";
-                                      echo $prodMsg; ?></span>
+          <h1 class="h2">Edit Product</h1>
+          <span class="text-danger"><?php $prodMsg = isset($_SESSION['prodMsg']) ? $_SESSION['prodMsg'] : "";
+                $_SESSION['prodMsg'] = "";
+                echo $prodMsg; ?></span>
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
               <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -71,31 +78,25 @@ session_start();
 
         <form action="index.php" method="POST" class="row g-3">
           <div class="col-md-6">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username">
+            <label for="id" class="form-label">Product ID</label>
+            <input type="text" class="form-control" id="id" name="id" value="<?php echo $productArr[0]['id']; ?>" disabled>
           </div>
           <div class="col-md-6">
-            <label for="name" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="name" name="name">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="<?php echo $productArr[0]['name']; ?>">
           </div>
           <div class="col-md-6">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email">
+            <label for="category" class="form-label">Product Category</label>
+            <input type="text" class="form-control" id="category" name="category" value="<?php echo $productArr[0]['category']; ?>">
           </div>
           <div class="col-md-6">
-            <label for="role" class="form-label">Role</label>
-            <input type="role" class="form-control" id="role" name="role">
-          </div>
-          <div class="col-md-6">
-            <label for="status" class="form-label">Status</label>
-            <input type="status" class="form-control" id="status" name="status">
+            <label for="price" class="form-label">Product Price</label>
+            <input type="number" class="form-control" id="price" name="price" value="<?php echo $productArr[0]['price']; ?>">
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-primary" name="addUser">Add User</button>
+            <button type="submit" class="btn btn-primary" name="updateProduct" value="<?php echo $productArr[0]['id']; ?>">Update Product</button>
           </div>
-          <div class="col-md-12">
-            <span><?php echo isset($_SESSION['msg']) ? $_SESSION['msg'] : ""; ?></span>
-          </div>
+          
         </form>
       </main>
     </div>
