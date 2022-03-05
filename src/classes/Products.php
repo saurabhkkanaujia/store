@@ -22,7 +22,6 @@
         }
         public function updateProduct($id, $name, $category, $price){
             $sql = "UPDATE products SET name = '".$name."', category = '".$category."', price = ".$price." WHERE id = ".$id." ";
-            // $sql = "UPDATE products SET name = '".."' WHERE id = ".$id."";
             DB::getInstance()->exec($sql);
         }
     }
