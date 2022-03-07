@@ -22,5 +22,12 @@
             $sql = "DELETE FROM ".$table." WHERE id = ".$id."";
             DB::getInstance()->exec($sql);
         }
+        public function getIndex($arr, $index){
+            for($i=0; $i<count($arr); $i++){
+                if ($arr[$i] == $index){
+                    return $i;
+                }
+            }
+        }
         
     }

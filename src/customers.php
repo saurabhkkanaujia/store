@@ -7,10 +7,24 @@ if (!($_SESSION['user']['status'] == 'admin' || $_SESSION['user']['status'] == '
   $_SESSION['msg'] = "Please Signin First";
   header('Location: admin/login.php');
 }
+
 $amount = "";
 $fetchObj = new Admin();
 $fetchArr = $fetchObj->fetchAllUsers($amount);
 
+if(!isset($_SESSION['val'])){
+  $_SESSION['val']=1;
+}
+if (isset($_POST['pagination'])) {
+  if ($_POST['pagination'] == 'prev') {
+    $_SESSION['val'] -= 1;
+  } elseif ($_POST['pagination'] == 'next') {
+    $_SESSION['val'] += 1;
+  } else {
+    $_SESSION['val'] = $_POST['pagination'];
+  }
+}
+$val = $_SESSION['val'];
 ?>
 <!doctype html>
 <html lang="en">
@@ -100,6 +114,7 @@ $fetchArr = $fetchObj->fetchAllUsers($amount);
                 <tbody>
                   <?php
                   foreach ($fetchArr as $key => $value) {
+                    if ($key >= 5 * ($val - 1) && $key < (5 * $val)) {
                     echo "<tr>
                   <td>" . $value['id'] . "</td>
                   <td>" . $value['full_name'] . "</td>
@@ -118,11 +133,31 @@ $fetchArr = $fetchObj->fetchAllUsers($amount);
                     }
                     echo "<button class='btn btn-danger' type='submit' name = 'deleteUser' value = " . $value['id'] . ">Delete</button></td>
                         </td></tr> ";
-                  }
+                  }}
                   ?>
                 </tbody>
               </table>
             </form>
+            <nav aria-label="Page navigation example">
+        <form action="" method="POST">
+          <ul class="pagination">
+            <?php if ($val > 1) { ?>
+              <li class="page-item"><button class="page-link" name="pagination" value="prev">Previous</button></li>
+            <?php } ?>
+
+            <?php $ind = 1;
+            for ($i = 0; $i < count($fetchArr); $i += 5) { ?>
+
+              <li class="page-item"><button class="page-link" name="pagination" value="<?php echo $ind; ?>"><?php echo $ind; ?></button></li>
+            <?php $ind += 1;
+            } ?>
+
+            <?php if ((floor(count($fetchArr) / 5) + 1) != $val) { ?>
+              <li class="page-item"><button class="page-link" name="pagination" value="next">Next</button></li>
+            <?php } ?>
+          </ul>
+        </form>
+      </nav>
           </div>
         <?php } else if ($_SESSION['user']['role'] == 'customer') {
         ?>

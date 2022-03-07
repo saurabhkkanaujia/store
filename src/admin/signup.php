@@ -41,7 +41,10 @@
   <form action="../index.php" method="post">
     <h1 class="h3 mb-3 fw-normal">Sign Up</h1>
     <span>
-      <?php echo isset($_SESSION['msg'])?$_SESSION['msg']:"" ; ?>
+      <?php $msg = isset($_SESSION['msg'])?$_SESSION['msg']:"" ; 
+            $_SESSION['msg']="";
+            echo $msg;
+      ?>
     </span>
 
     <div class="form-floating">

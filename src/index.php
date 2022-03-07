@@ -82,6 +82,10 @@
         if($_SESSION['error'] == 1){
             header("Location: add-product.php");
         }elseif($_SESSION['error'] == 0){
+            // $obj = new Admin();
+            // $index = $obj->getIndex($_SESSION, 'prodArr');
+            // array_splice($_SESSION, $index, 1);
+            $_SESSION['prodArr']=[];
             header("Location: products.php");
         }
     }

@@ -43,7 +43,9 @@ session_start();
     <form action="../index.php" method="POST">
       <h1 class="h3 mb-3 fw-normal">Sign In</h1>
       <span>
-        <?php echo isset($_SESSION['msg']) ? $_SESSION['msg'] : ""; ?>
+        <?php $msg= isset($_SESSION['msg']) ? $_SESSION['msg'] : "";
+              $_SESSION['msg']="";
+              echo $msg; ?>
       </span>
 
       <div class="form-floating">

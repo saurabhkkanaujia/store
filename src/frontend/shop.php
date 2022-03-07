@@ -5,26 +5,58 @@ include('../classes/User.php');
 include('../classes/Login.php');
 include('../classes/Admin.php');
 include('../classes/Products.php');
-$query = "";
-$getProd = new Products();
-$prodArr = $getProd->fetchProducts($query);
 
+$_SESSION['path']=$_SERVER['PHP_SELF'];
 
-if(!isset($_SESSION['mval'])){
-    $_SESSION['mval']=1;
-  }
-  if (isset($_POST['pagination'])) {
+$fetchObj = new Products();
+if (!(isset($_SESSION['shopProdArr'])) || !empty($_SESSION['shopProdArr'])) {
+    $query = "";
+    $prodArr = $fetchObj->fetchProducts($query);
+    $_SESSION['shopProdArr'] = $prodArr;
+}
+
+if (!isset($_SESSION['mval'])) {
+    $_SESSION['mval'] = 1;
+}
+
+if (isset($_POST['pagination'])) {
     if ($_POST['pagination'] == 'prev') {
-      $_SESSION['mval'] -= 1;
+        $_SESSION['mval'] -= 1;
     } elseif ($_POST['pagination'] == 'next') {
-      $_SESSION['mval'] += 1;
+        $_SESSION['mval'] += 1;
     } else {
-      $_SESSION['mval'] = $_POST['pagination'];
+        $_SESSION['mval'] = $_POST['pagination'];
     }
-  }
-  $val = $_SESSION['mval'];
-  
-  
+}
+$val = $_SESSION['mval'];
+
+if ((isset($_POST['action'])) && ($_POST['action'] == 'searchProd')) {
+    $searchVal = $_POST['searchField'];
+
+    $dropdown = $_POST['dropdown'];
+    switch ($dropdown) {
+        case "price":
+            $filter = "price";
+            break;
+        case "recent":
+            $filter = "id DESC";
+            break;
+
+        case "category":
+            $filter = "category";
+            break;
+        default:
+            $filter = "id DESC";
+    }
+
+    $query = "WHERE id LIKE '%" . $_POST['searchField'] . "%' OR name LIKE '%" . $_POST['searchField'] . "%' OR category LIKE '%" . $_POST['searchField'] . "%' ORDER BY " . $filter . "";
+    $prodArr = $fetchObj->fetchProducts($query);
+    $_SESSION['shopProdArr'] = $prodArr;
+}
+
+$prodArr = $_SESSION['shopProdArr'];
+
+
 
 ?>
 <!DOCTYPE html>
@@ -63,92 +95,8 @@ if(!isset($_SESSION['mval'])){
 
 <body>
 
-    <div class="header-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="user-menu">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
-                            <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                            <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                            <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
-                            <li><a href="#"><i class="fa fa-user"></i> Login</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="header-right">
-                        <ul class="list-unstyled list-inline">
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">currency :</span><span class="value">USD </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">USD</a></li>
-                                    <li><a href="#">INR</a></li>
-                                    <li><a href="#">GBP</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown dropdown-small">
-                                <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" href="#"><span class="key">language :</span><span class="value">English </span><b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">German</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- End header area -->
-
-    <div class="site-branding-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="logo">
-                        <h1><a href="./"><img src="img/logo.png"></a></h1>
-                    </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="shopping-item">
-                        <a href="cart.html">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> <!-- End site branding area -->
-
-    <div class="mainmenu-area">
-        <div class="container">
-            <div class="row">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="index.html">Home</a></li>
-                        <li class="active"><a href="shop.html">Shop page</a></li>
-                        <li><a href="single-product.html">Single product</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="#">Category</a></li>
-                        <li><a href="#">Others</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div> <!-- End mainmenu area -->
+    <?php include 'front_header.php' ?>
+    <!-- End mainmenu area -->
 
     <div class="product-big-title-area">
         <div class="container">
@@ -163,33 +111,65 @@ if(!isset($_SESSION['mval'])){
     </div>
 
 
-    <div class="single-product-area">
-        <div class="zigzag-bottom"></div>
-        <div class="container">
-            <div class="row">
 
+    <div class="single-product-area">
+
+        <div class="zigzag-bottom"></div>
+
+        <div class="container">
+            <form action="" method="POST" class="row row-cols-lg-auto g-3 align-items-center">
+                <div class="col-md-4">
+                    <label class="visually-hidden" for="inlineFormInputGroupUsername">Search</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="searchField" placeholder="Enter id,name...">
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="visually-hidden" for="inlineFormSelectPref">Sort By</label>
+                    <select class="form-select" id="inlineFormSelectPref" name="dropdown">
+                        <option selected>Sort By</option>
+                        <option value="price">Price</option>
+                        <option value="recent">Recently Added</option>
+                        <option value="category">Category</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" name="action" value="searchProd" class="btn btn-primary">Search</button>
+                </div>
+
+
+            </form>
+
+            <div class="row">
                 <?php
                 foreach ($prodArr as $key => $value) {
                     if ($key >= 4 * ($val - 1) && $key < (4 * $val)) {
 
-                        echo '<div class="col-md-3 col-sm-6">
-                        <div class="single-shop-product">
-                            <div class="product-upper">
-                                <img src="img/product-2.jpg" alt="">
-                            </div>
-                            <h2><a href="single-product.php?id=' . $value['id'] . '" name="prodName">' . $value['name'] . '</a></h2>
-                            <div class="product-carousel-price">
-                                <ins>₹' . $value['price'] . '</ins> <del>$999.00</del>
-                            </div>
-    
-                            <div class="product-option-shop">
-                                <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/canvas/shop/?add-to-cart=70">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>';
+                        echo '                 <form action="../config.php" method="POST">
+
+                            <div class="col-md-3 col-sm-6">
+                                    <div class="single-shop-product">
+                                        <div class="product-upper">
+                                            <img src="img/product-2.jpg" alt="">
+                                        </div>
+                                        <h2><a href="single-product.php?id=' . $value['id'] . '" name="prodName">' . $value['name'] . '</a></h2>
+                                        <div class="product-carousel-price">
+                                            <ins>₹' . $value['price'] . '</ins> <del>$999.00</del>
+                                        </div>
+                
+                                        <div class="product-option-shop">
+                                            <button class="add_to_cart_button" rel="nofollow" name="action" value="addToCart">Add to cart </button>
+                                            <input type="hidden" name="prodID" value=' . $value['id'] . '>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>';
                     }
                 }
                 ?>
+
             </div>
 
 

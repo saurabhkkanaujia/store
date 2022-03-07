@@ -8,13 +8,20 @@ if (!($_SESSION['user']['status'] == 'admin' || $_SESSION['user']['status'] == '
   $_SESSION['msg'] = "Please Signin First";
   header('Location: admin/login.php');
 }
-$query = "";
 $fetchObj = new Products();
-$prodArr = $fetchObj->fetchProducts($query);
 
+// echo "<pre>";
+// print_r($_SESSION);
+// echo "</pre>";
+if(empty($_SESSION['prodArr'])){
+  $query = "";
+  $prodArr = $fetchObj->fetchProducts($query);
+  $_SESSION['prodArr'] = $prodArr;
+}
 if(!isset($_SESSION['val'])){
   $_SESSION['val']=1;
 }
+
 if (isset($_POST['pagination'])) {
   if ($_POST['pagination'] == 'prev') {
     $_SESSION['val'] -= 1;
@@ -26,7 +33,14 @@ if (isset($_POST['pagination'])) {
 }
 $val = $_SESSION['val'];
 
+if((isset($_POST['action'])) && ($_POST['action'] == 'searchProd')){
+  $searchVal = $_POST['searchField'];
+  $query="WHERE id LIKE '%".$_POST['searchField']."%' OR name LIKE '%".$_POST['searchField']."%' OR category LIKE '%".$_POST['searchField']."%' ";
+  $prodArr = $fetchObj->fetchProducts($query);
+  $_SESSION['prodArr'] = $prodArr;
+}
 
+$prodArr = $_SESSION['prodArr'];
 
 ?>
 <!doctype html>
@@ -90,18 +104,18 @@ $val = $_SESSION['val'];
       </div>
     </div>
 
-    <form class="row row-cols-lg-auto g-3 align-items-center">
+    <form action="" method="POST" class="row row-cols-lg-auto g-3 align-items-center">
       <div class="col-12">
         <label class="visually-hidden" for="inlineFormInputGroupUsername">Search</label>
         <div class="input-group">
-          <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Enter id,name...">
+          <input type="text" class="form-control" id="inlineFormInputGroupUsername" name="searchField" placeholder="Enter id,name...">
         </div>
       </div>
 
 
 
       <div class="col-12">
-        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="submit" name="action" value="searchProd" class="btn btn-primary">Search</button>
       </div>
       <div class="col-12">
         <a class="btn btn-success" href="add-product.php">Add Product</a>
