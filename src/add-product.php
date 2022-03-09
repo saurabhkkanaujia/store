@@ -1,8 +1,6 @@
 <?php
   session_start();
-  // echo "<pre>";
-  // print_r($_SESSION);
-  // echo "</pre>";
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,7 +48,8 @@
   <div class="row">
     <?php include 'sidebar.php'?>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap
+       align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Add Product</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
@@ -64,7 +63,7 @@
         </div>
       </div>
 
-      <form action="index.php" method="POST" class="row g-3">
+      <form action="index.php" method="POST" enctype="multipart/form-data" class="row g-3">
       <div class="col-md-6">
           <label for="name" class="form-label">Product Name</label>
           <input type="text" class="form-control" id="name" name="name">
@@ -76,6 +75,9 @@
         <div class="col-md-6">
           <label for="price" class="form-label">Product Price</label>
           <input type="number" class="form-control" id="price" name="price">
+        </div>
+        <div class="col-md-6">
+          <input type="file" name="imgToUpload">
         </div>
         <div class="col-12">
           <button type="submit" class="btn btn-primary" name="add">Add Product</button>
@@ -89,6 +91,8 @@
 </div>
 
 
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" 
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" 
+    crossorigin="anonymous"></script>
   </body>
 </html>

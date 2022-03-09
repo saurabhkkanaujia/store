@@ -43,7 +43,9 @@ session_start();
     <form action="../index.php" method="POST">
       <h1 class="h3 mb-3 fw-normal">Sign In</h1>
       <span>
-        <?php echo isset($_SESSION['msg']) ? $_SESSION['msg'] : ""; ?>
+        <?php $msg= isset($_SESSION['msg']) ? $_SESSION['msg'] : "";
+              $_SESSION['msg']="";
+              echo $msg; ?>
       </span>
 
       <div class="form-floating">
@@ -60,7 +62,8 @@ session_start();
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <button class="w-100 btn btn-lg btn-primary" name="signin" type="submit">Sign in</button>
+      <button class="w-100 btn btn-lg btn-primary" name="signin" type="submit">Sign in</button><br><br>
+      <a class="" href="signup.php">Sign Up</a>
       <p class="mt-5 mb-3 text-muted">&copy; CEDCOSS Technologies</p>
     </form>
   </main>

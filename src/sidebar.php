@@ -1,9 +1,7 @@
 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="position-sticky pt-3">
-      <?php 
-        if($_SESSION['user']['role']=='admin'){
-      ?>
-      
+<?php if ($_SESSION['user']['role']=='admin') {
+?>
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="dashboard.php">
@@ -12,7 +10,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="orders.php">
               <span data-feather="file"></span>
               Orders
             </a>
@@ -29,23 +27,10 @@
               Customers
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              Reports
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              Integrations
-            </a>
-          </li>
         </ul>
         
-        <?php }
-          else if($_SESSION['user']['role']=='customer'){
-        ?>      
+<?php } elseif ($_SESSION['user']['role']=='customer') {
+?>      
           <ul>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="dashboard.php">
@@ -55,7 +40,7 @@
           </li>          
         </ul>
 
-        <?php } ?>
+<?php } ?>
 
       </div>
     </nav>
