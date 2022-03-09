@@ -70,5 +70,6 @@ class Order
                 VALUES ('" . $this->cardName . "', " . $this->cardNumber . ",
                 " . $this->cardExpiry . ", " . $this->cvv . ")";
         DB::getInstance()->exec($sql);
+        unset($_SESSION['cart']);
     }
 }
