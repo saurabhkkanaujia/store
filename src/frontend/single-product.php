@@ -1,32 +1,27 @@
 <?php
-include('../config.php');
-include('../classes/DB.php');
-include('../classes/User.php');
-include('../classes/Login.php');
-include('../classes/Admin.php');
-include('../classes/Products.php');
 
-$_SESSION['path']=$_SERVER['PHP_SELF'];
-echo $_SESSION['path'];
+use App\Products;
 
-if (isset($_POST['prodName'])) {
+include('../index.php');
+
+
+$_SESSION['path'] = $_SERVER['PHP_SELF'];
+
+if (isset($_POST['prodName'])) 
+{
     $koi = $_POST['prodName'];
     echo $koi;
 }
 
-if($_GET['id']==null){
+if ($_GET['id'] == null) {
     header("Location: shop.php");
-}else{
-    $_SESSION['id']=$_GET['id'];
+} else {
+    $_SESSION['id'] = $_GET['id'];
 }
 
 $queryWithID = "WHERE id = " . $_GET['id'] . " ";
 $fetchProd = new Products();
 $productArr = $fetchProd->fetchProducts($queryWithID);
-echo "<pre>";
-print_r($_SESSION['cart']);
-echo "</pre>";
-
 ?>
 <!DOCTYPE html>
 <!--
@@ -68,7 +63,8 @@ echo "</pre>";
 
 <body>
 
-    <?php include 'front_header.php' ?> <!-- End mainmenu area -->
+    <?php include 'front_header.php' ?>
+    <!-- End mainmenu area -->
 
     <div class="product-big-title-area">
         <div class="container">
@@ -152,7 +148,7 @@ echo "</pre>";
                             <div class="col-sm-6">
                                 <div class="product-images">
                                     <div class="product-main-img">
-                                        <img src="img/product-2.jpg" alt="">
+                                        <img class='img-fluid' src="../uploads/<?php echo $productArr[0]['imgName']; ?>" alt="">
                                     </div>
 
                                     <div class="product-gallery">
@@ -170,7 +166,7 @@ echo "</pre>";
                                         <ins>$<?php echo $productArr[0]['price']; ?></ins> <del>$100.00</del>
                                     </div>
 
-                                    <form action="../config.php" method="POST" class="cart">
+                                    <form action="../index.php" method="POST" class="cart">
                                         <div class="quantity">
                                             <input type="number" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
                                         </div>
@@ -242,6 +238,7 @@ echo "</pre>";
                                 </div>
                                 <div class="single-product">
                                     <div class="product-f-image">
+
                                         <img src="img/product-2.jpg" alt="">
                                         <div class="product-hover">
                                             <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>

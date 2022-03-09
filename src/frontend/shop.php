@@ -1,4 +1,8 @@
 <?php
+
+use App\Products;
+
+session_start();
 include('../config.php');
 include('../classes/DB.php');
 include('../classes/User.php');
@@ -6,13 +10,14 @@ include('../classes/Login.php');
 include('../classes/Admin.php');
 include('../classes/Products.php');
 
-$_SESSION['path']=$_SERVER['PHP_SELF'];
+$_SESSION['path'] = $_SERVER['PHP_SELF'];
 
 $fetchObj = new Products();
-if (!(isset($_SESSION['shopProdArr'])) || !empty($_SESSION['shopProdArr'])) {
+if (!(isset($_SESSION['shopProdArr'])) || !empty($_SESSION['shopProdArr'])) 
+{
     $query = "";
-    $prodArr = $fetchObj->fetchProducts($query);
-    $_SESSION['shopProdArr'] = $prodArr;
+    $prodArr1 = $fetchObj->fetchProducts($query);
+    $_SESSION['shopProdArr'] = $prodArr1;
 }
 
 if (!isset($_SESSION['mval'])) {
@@ -32,7 +37,6 @@ $val = $_SESSION['mval'];
 
 if ((isset($_POST['action'])) && ($_POST['action'] == 'searchProd')) {
     $searchVal = $_POST['searchField'];
-
     $dropdown = $_POST['dropdown'];
     switch ($dropdown) {
         case "price":
@@ -91,6 +95,11 @@ $prodArr = $_SESSION['shopProdArr'];
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .prodImg {
+            height: 150px;
+        }
+    </style>
 </head>
 
 <body>
@@ -147,12 +156,12 @@ $prodArr = $_SESSION['shopProdArr'];
                 foreach ($prodArr as $key => $value) {
                     if ($key >= 4 * ($val - 1) && $key < (4 * $val)) {
 
-                        echo '                 <form action="../config.php" method="POST">
+                        echo '<form action="../index.php" method="POST">
 
                             <div class="col-md-3 col-sm-6">
                                     <div class="single-shop-product">
                                         <div class="product-upper">
-                                            <img src="img/product-2.jpg" alt="">
+                                        <img class="img-fluid prodImg" src="../uploads/' . $value['imgName'] . '">
                                         </div>
                                         <h2><a href="single-product.php?id=' . $value['id'] . '" name="prodName">' . $value['name'] . '</a></h2>
                                         <div class="product-carousel-price">
@@ -160,7 +169,8 @@ $prodArr = $_SESSION['shopProdArr'];
                                         </div>
                 
                                         <div class="product-option-shop">
-                                            <button class="add_to_cart_button" rel="nofollow" name="action" value="addToCart">Add to cart </button>
+                                            <button class="add_to_cart_button" rel="nofollow"
+                                             name="action" value="addToCart">Add to cart </button>
                                             <input type="hidden" name="prodID" value=' . $value['id'] . '>                                        
                                         </div>
                                     </div>

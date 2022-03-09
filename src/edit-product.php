@@ -1,4 +1,7 @@
 <?php
+
+use App\Products;
+
 session_start();
 include('config.php');
 include('classes/DB.php');
@@ -53,18 +56,19 @@ $productArr = $fetchProd->fetchProducts($queryWithID);
 
 <body>
 
-  <?php include 'header.php' ?>
+<?php include 'header.php' ?>
 
   <div class="container-fluid">
     <div class="row">
-      <?php include 'sidebar.php' ?>
+    <?php include 'sidebar.php' ?>
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="d-flex justify-content-between flex-wrap 
+        flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Edit Product</h1>
 
           <span class="text-danger"><?php $prodMsg = isset($_SESSION['prodMsg']) ? $_SESSION['prodMsg'] : "";
-                $_SESSION['prodMsg'] = "";
-                echo $prodMsg; ?>
+                                    $_SESSION['prodMsg'] = "";
+                                    echo $prodMsg; ?>
           </span>
 
           <div class="btn-toolbar mb-2 mb-md-0">
@@ -82,7 +86,8 @@ $productArr = $fetchProd->fetchProducts($queryWithID);
         <form action="index.php" method="POST" class="row g-3">
           <div class="col-md-6">
             <label for="id" class="form-label">Product ID</label>
-            <input type="text" class="form-control" id="id" name="id" value="<?php echo $productArr[0]['id']; ?>" disabled>
+            <input type="text" class="form-control" id="id" name="id" 
+            value="<?php echo $productArr[0]['id']; ?>" disabled>
           </div>
           <div class="col-md-6">
             <label for="name" class="form-label">Product Name</label>
@@ -90,23 +95,27 @@ $productArr = $fetchProd->fetchProducts($queryWithID);
           </div>
           <div class="col-md-6">
             <label for="category" class="form-label">Product Category</label>
-            <input type="text" class="form-control" id="category" name="category" value="<?php echo $productArr[0]['category']; ?>">
+            <input type="text" class="form-control" id="category" name="category" 
+            value="<?php echo $productArr[0]['category']; ?>">
           </div>
           <div class="col-md-6">
             <label for="price" class="form-label">Product Price</label>
-            <input type="number" class="form-control" id="price" name="price" value="<?php echo $productArr[0]['price']; ?>">
+            <input type="number" class="form-control" id="price" name="price" 
+            value="<?php echo $productArr[0]['price']; ?>">
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-primary" name="updateProduct" value="<?php echo $productArr[0]['id']; ?>">Update Product</button>
+            <button type="submit" class="btn btn-primary" name="updateProduct" 
+            value="<?php echo $productArr[0]['id']; ?>">Update Product</button>
           </div>
-          
+
         </form>
       </main>
     </div>
   </div>
 
 
-  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" 
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 </html>

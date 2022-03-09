@@ -1,8 +1,6 @@
 <?php
 session_start();
-// echo "<pre>";
-// print_r($_SESSION);
-// echo "</pre>";
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -46,13 +44,14 @@ session_start();
 
 <body>
 
-  <?php include 'header.php' ?>
+<?php include 'header.php' ?>
 
   <div class="container-fluid">
     <div class="row">
-      <?php include 'sidebar.php' ?>
+    <?php include 'sidebar.php' ?>
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="d-flex justify-content-between flex-wrap
+         flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Add User</h1>
           <span class="text-success"><?php $prodMsg = isset($_SESSION['msg']) ? $_SESSION['msg'] : "";
                                       $_SESSION['msg'] = "";
@@ -102,7 +101,9 @@ session_start();
   </div>
 
 
-  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js" 
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" 
+  crossorigin="anonymous"></script>
 </body>
 
 </html>
