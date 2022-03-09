@@ -248,7 +248,7 @@ foreach ($_SESSION['cart'] as $key => $value) {
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_email" name="billing_email" class="input-text " value>
+                                                <input type="text" placeholder="" id="billing_email" name="billing_email" class="input-text " value="<?php echo $_SESSION['user']['email']; ?>" disabled>
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
