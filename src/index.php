@@ -34,7 +34,6 @@ function getProduct($products, $id)
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case "addToCart":
-            // echo $_POST['prodID'];
             $path = $_SESSION['path'];
             if ($path == 'frontend/single-product.php') {
                 $path = "frontend/single-product.php?id=" . $_POST['prodID'] . "";

@@ -36,6 +36,7 @@ class Admin
             }
         }
     }
+    
     public function fetchOrders()
     {
         $sql = "SELECT o.order_id, u.id, u.username, u.email, p.name,

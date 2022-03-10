@@ -165,6 +165,16 @@ $prodArr = $fetchObj->fetchProducts($query);
               <label for="floatingInput">Full Name</label>
             </div>
 
+            <div class="form-floating">
+              <input type="text" class="form-control" id="floatingInput" name="email" placeholder="Full Name" value="<?php echo $_SESSION['user']['email']; ?>" disabled>
+              <label for="floatingInput">Email</label>
+            </div>
+
+            <div class="form-floating">
+              <input type="text" class="form-control" id="floatingInput" name="role" placeholder="Role" value="<?php echo $_SESSION['user']['role']; ?>" disabled>
+              <label for="floatingInput">Role</label>
+            </div>
+
 
             <!-- <button class="w-100 btn btn-lg btn-primary" type="submit" name="submit" value="update">Update</button> -->
             <p class="mt-5 mb-3 text-muted">&copy; CEDCOSS Technologies</p>
