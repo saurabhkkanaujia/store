@@ -11,9 +11,7 @@ include('../classes/Admin.php');
 include('../classes/Products.php');
 
 $_SESSION['path'] = $_SERVER['PHP_SELF'];
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
+
 $fetchObj = new Products();
 if (!(isset($_SESSION['shopProdArr'])) || !empty($_SESSION['shopProdArr'])) 
 {
